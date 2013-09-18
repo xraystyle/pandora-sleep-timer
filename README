@@ -1,0 +1,11 @@
+Pandora Sleep Timer For Mac
+
+This is a quick bash script that works as a sleep timer for the Pandora desktop application.
+
+The app asks how long you want the timer to run, then fades out the volume over the last
+five minutes of the requested interval.
+
+The script uses Applescript calls to handle the volume settings.
+
+This script would work just as easily for any other music application, just edit it to 
+kill the music app of your choice instead of Pandora.

@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# Pandora Sleep Timer For Mac
+
+# This line supresses useless dyld messages on some machines 
+export -n DYLD_LIBRARY_PATH
+
+clear
+
+echo "Pandora Sleep Timer"
+
+echo 
+
+echo "How many minutes would you like to listen? (at least 5 minutes)"
+
+/bin/echo -n "> "
+
+read MINUTES
+
+# Get current system volume.
+# System volume values range from 0-100
+
+CURRENTVOL=`osascript -e "output volume of (get volume settings)"` > /dev/null
+
+TOTAL=`expr $MINUTES \* 60`
+
+DELAY=`expr $TOTAL - 300`
+
+# Fade-out lowers volume evenly from current to zero over 5 minutes.
+# Calculate how many seconds to sleep each time volume is lowered 1 point.
+FADESEC=`expr 300 / $CURRENTVOL`
+
+echo
+
+echo Sleep timer set for $MINUTES minutes...
+
+# Sleep for total sleep time minus 5 minutes.
+sleep $DELAY
+
+echo
+
+echo Fading out...
+
+# Loop until volume reaches zero.
+while [[ `osascript -e "output volume of (get volume settings)"` -gt 0  ]]; do
+	# Lower the volume by 1 point, then set $CURRENTVOL to the new value.
+	osascript -e "set volume output volume `expr $CURRENTVOL - 1`"
+	CURRENTVOL=`osascript -e "output volume of (get volume settings)"`
+	# Wait the calculated number of seconds, lather, rinse, repeat.
+	sleep $FADESEC
+done
+
+# Turn that shit off, no one likes wasting bandwidth.
+killall Pandora
+
+exit 0
