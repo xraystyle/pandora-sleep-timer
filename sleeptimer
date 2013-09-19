@@ -20,7 +20,7 @@ read MINUTES
 # Get current system volume.
 # System volume values range from 0-100
 
-CURRENTVOL=`osascript -e "output volume of (get volume settings)"` > /dev/null
+CURRENTVOL=`osascript -e "output volume of (get volume settings)"` 
 
 TOTAL=`expr $MINUTES \* 60`
 
